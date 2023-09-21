@@ -1,0 +1,50 @@
+import profesionales.*
+
+describe "test de los profesionales " {
+	const estaEmpresa = new Empresa(honorarioReferencia = 3000)
+	const unr = new Universidad(provinciaDondeEstas = "Santa Fe", cobroRecomendado = 2200)
+	const unahur = new Universidad(provinciaDondeEstas = "Bs As", cobroRecomendado = 8800)
+	const juana = new ProfesionalVinculado(universidad= unr)
+	const melina = new ProfesionalAsociado(universidad= unr)
+	const rocio = new ProfesionalLibre(universidad= unahur, honorariosPorHora = 5000 , provinciasDondePuedeTrabajar = ["Santa Fe", "Córdoba","Buenos Aires"])
+
+	method initialize() {
+		estaEmpresa.contratar(juana)
+		estaEmpresa.contratar(rocio)
+		estaEmpresa.contratar(melina)
+	}
+
+test "Esta empresa es de gente acotada." {
+	assert.that(estaEmpresa.esDeGenteAcotada())
+}
+
+test "Esta empresa no es de gente acotada." {
+	const luciana = new ProfesionalLibre(universidad= unahur, honorariosPorHora = 5000 , provinciasDondePuedeTrabajar = ["Santa Fe", "Córdoba","Buenos Aires","Entre rios"])
+	estaEmpresa.contratar(luciana)
+	assert.notThat(estaEmpresa.esDeGenteAcotada())
+}
+
+}
+
+
+//Se puede definir un ḿetodo `initialize()` (si sabés cómo es, no te pongas a averiguar ahora) para definir información que se usa en varios tests dentro de un `describe`.
+
+/*
+Tenemos estas universidades:
+- de San Martín: está en la provincia de Buenos Aires, los honorarios recomendados son de 3500 pesos.
+- de Rosario: está en la provincia de Santa Fe, los honorarios recomendados son de 2800 pesos.
+- de Corrientes: está en la provincia de Corrientes, los honorarios recomendados son de 4200 pesos.
+- de Hurlingham: está en la provincia de Buenos Aires, los honorarios recomendados son de 8800 pesos.
+
+y estos profesionales
+- Luciana, libre, estudió en la Univ. de Rosario, honorarios 3200 pesos, puede trabajar en Santa Fe y Entre Ríos.
+
+Una empresa que contrate a estos cuatro profesionales, y cuyos honorarios de referencia son 3500 pesos, debe tener
+- dos de sus prlaofesionales estudiaron en Rosario, uno en Hurlingham, ninguno (o sea cero) en San Martín.  
+- como _profesionales caros_, solamente a Rocío.
+  ¡OJO! el método no va a devolver a Rocío, va a devolver una colección que tiene un solo elemento, que es Rocío.
+- como _universidades formadoras_, a las de Rosario, Corrientes y Hurlingham.
+- como _profesional más barato_ a Juana.
+ 
+ Pero si le agregamos a Luciana dos provincias más (p.ej. Corrientes y Misiones)
+ */
